@@ -36,41 +36,42 @@ locals {
   onramp = {
     id      = "onramp"
     cidr    = local.fgt_vpc_cidr
-    bgp-asn = local.hub["bgp-asn_spoke"]
+    bgp-asn = local.hub[0]["bgp_asn_spoke"]
   }
-  hubs = [
-    {
-      id                = local.hub["id"]
-      bgp-asn           = local.hub["bgp-asn_hub"]
-      public-ip         = module.fgt_hub.fgt_active_eip_public
-      hub-ip            = cidrhost(local.hub["vpn_cidr"], 1)
-      site-ip           = "" // set to "" if VPN mode-cfg is enable
-      hck-srv-ip        = cidrhost(local.hub["vpn_cidr"], 1)
-      vpn_psk           = module.fgt_hub_config.vpn_psk
-      cidr              = local.hub["cidr"]
-      ike-version       = local.hub["ike-version"]
-      network_id        = local.hub["network_id"]
-      dpd-retryinterval = local.hub["dpd-retryinterval"]
-    }
-  ]
+  hubs = [{
+    id                = local.hub[0]["id"]
+    bgp_asn           = local.hub[0]["bgp_asn_hub"]
+    external_ip       = module.fgt_hub.fgt_active_eip_public
+    hub_ip            = cidrhost(local.hub[0]["vpn_cidr"], 1)
+    site_ip           = "" // set to "" if VPN mode-cfg is enable
+    hck_ip            = cidrhost(local.hub[0]["vpn_cidr"], 1)
+    vpn_psk           = module.fgt_hub_config.vpn_psk
+    cidr              = local.hub[0]["cidr"]
+    ike_version       = local.hub[0]["ike_version"]
+    network_id        = local.hub[0]["network_id"]
+    dpd_retryinterval = local.hub[0]["dpd_retryinterval"]
+    sdwan_port        = local.hub[0]["vpn_port"]
+  }]
+
   #-----------------------------------------------------------------------------------------------------
   # FGT HUB
   #-----------------------------------------------------------------------------------------------------
   hub_vpc_cidr = "192.168.0.0/24"
 
-  hub = {
+  hub = [{
     id                = "HUB"
-    bgp-asn_hub       = "65000"
-    bgp-asn_spoke     = "65000"
+    bgp_asn_hub       = "65000"
+    bgp_asn_spoke     = "65000"
     vpn_cidr          = "10.10.10.0/24"
     vpn_psk           = "secret-key-123"
     cidr              = local.hub_vpc_cidr
-    ike-version       = "2"
+    ike_version       = "2"
     network_id        = "1"
-    dpd-retryinterval = "5"
-    mode-cfg          = true
-  }
-  
+    dpd_retryinterval = "5"
+    mode_cfg          = true
+    vpn_port          = "public"
+  }]
+
   #-----------------------------------------------------------------------------------------------------
   # VPC Nodes and TGW
   #-----------------------------------------------------------------------------------------------------
