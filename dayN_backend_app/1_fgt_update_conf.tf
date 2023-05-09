@@ -3,7 +3,7 @@ resource "fortios_firewall_vip" "app_vip" {
   name = "vip-${local.fgt_secrets["MAPPED_IP"]}-${local.app_nodeport}"
 
   type        = "static-nat"
-  extintf     = "port2"
+  extintf     = "port1"
   extip       = local.fgt_secrets["EXTERNAL_IP"]
   extport     = local.app_nodeport
   mappedport  = local.app_nodeport
@@ -27,10 +27,10 @@ resource "fortios_firewall_policy" "app_policy" {
   logtraffic      = "all"
 
   dstintf {
-    name = "port3"
+    name = "port2"
   }
   srcintf {
-    name = "port2"
+    name = "port1"
   }
   srcaddr {
     name = "all"

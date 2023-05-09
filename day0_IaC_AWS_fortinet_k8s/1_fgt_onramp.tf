@@ -41,8 +41,8 @@ data "template_file" "fgt_active_extra-config_api" {
     mapped_ip     = cidrhost(local.nodes_subnet_cidr, local.node_master_cidrhost)
     external_port = local.api_port
     mapped_port   = local.api_port
-    public_port   = "port2"
-    private_port  = "port3"
+    public_port   = "port1"
+    private_port  = "port2"
     suffix        = local.api_port
   }
 }
@@ -53,8 +53,8 @@ data "template_file" "fgt_passive_extra-config_api" {
     mapped_ip     = cidrhost(local.nodes_subnet_cidr, local.node_master_cidrhost)
     external_port = local.api_port
     mapped_port   = local.api_port
-    public_port   = "port2"
-    private_port  = "port3"
+    public_port   = "port1"
+    private_port  = "port2"
     suffix        = local.api_port
   }
 }
